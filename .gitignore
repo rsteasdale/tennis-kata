@@ -1,0 +1,6 @@
+.vs/
+/*.v3.ncrunchsolution
+bin/
+obj/
+*.cache
+*.user
