@@ -78,8 +78,10 @@ namespace Tennis
             Assert.Equal("Deuce", game.Score());
         }
 
-        [Fact]
-        public void GivenPlayer1WinsDeuceThenAdvantage()
+        [Theory]
+        [InlineData("Player 1", "Advantage Player 1")]
+        [InlineData("Player 2", "Advantage Player 2")]
+        public void GivenPlayer1WinsDeuceThenAdvantage(string winningPlayer, string expectedScore)
         {
             var game = new Game();
             game.WinPoint("Player 1");
@@ -89,9 +91,9 @@ namespace Tennis
             game.WinPoint("Player 2");
             game.WinPoint("Player 2");
 
-            game.WinPoint("Player 1");
+            game.WinPoint(winningPlayer);
 
-            Assert.Equal("Advantage Player 1", game.Score());
+            Assert.Equal(expectedScore, game.Score());
         }
     }
 
@@ -125,12 +127,15 @@ namespace Tennis
                 _score = "Deuce";
             else if (_player1Score > FortyPoints && _player1Score == _player2Score + 1)
                 _score = $"Advantage {player}";
+            else if (_player2Score > FortyPoints && _player2Score == _player1Score + 1)
+                _score = $"Advantage {player}";
             else if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
                 _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
         }
 
+        
         private bool IsDeuce()
         {
             return _player1Score == FortyPoints && _player2Score == FortyPoints;
