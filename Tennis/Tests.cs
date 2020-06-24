@@ -86,6 +86,8 @@ namespace Tennis
         private int _player2Score;
         private int _player1Score;
 
+        private const int FortyPoints = 3;
+
         public Game(string player1 = "Player 1")
         {
             _player1 = player1;
@@ -113,12 +115,12 @@ namespace Tennis
 
         private bool IsDeuce()
         {
-            return _player1Score == 3 && _player2Score == 3;
+            return _player1Score == FortyPoints && _player2Score == FortyPoints;
         }
 
         private bool PlayerHasWon()
         {
-            return _player1Score > 3 || _player2Score > 3;
+            return _player1Score > FortyPoints || _player2Score > FortyPoints;
         }
 
         private static string ConvertToPoints(int shotsWon)
