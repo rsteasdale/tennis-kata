@@ -89,10 +89,15 @@ namespace Tennis
             else
                 _player2Score++;
 
-            if (_player1Score > 3 || _player2Score > 3)
+            if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
                 _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
+        }
+
+        private bool PlayerHasWon()
+        {
+            return _player1Score > 3 || _player2Score > 3;
         }
 
         private static string ConvertToPoints(int shotsWon)
