@@ -139,7 +139,6 @@ namespace Tennis
     {
         private readonly string _player1;
         private readonly string _player2;
-        private string _score = "Love-Love";
         private int _player2Score;
         private int _player1Score;
 
@@ -153,7 +152,16 @@ namespace Tennis
 
         public string Score()
         {
-            return _score;
+            if (IsDeuce())
+                return "Deuce";
+            if (PlayersHaveAtLeastForty() && PlayerWinningByOne())
+                return $"Advantage {GetWinningPlayer()}";
+            if (PlayersHaveAtLeastForty() && _player1Score == _player2Score)
+                return "Deuce";
+            if (PlayerHasWon())
+                return $"{GetWinningPlayer()} Wins!";
+            
+            return $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
         }
 
         public void WinPoint(string player)
@@ -162,17 +170,6 @@ namespace Tennis
                 _player1Score++;
             else
                 _player2Score++;
-
-            if (IsDeuce())
-                _score = "Deuce";
-            else if (PlayersHaveAtLeastForty() && PlayerWinningByOne())
-                _score = $"Advantage {GetWinningPlayer()}";
-            else if (PlayersHaveAtLeastForty() && _player1Score == _player2Score)
-                _score = "Deuce";
-            else if (PlayerHasWon())
-                _score = $"{player} Wins!";
-            else
-                _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
         }
 
         private string GetWinningPlayer()
@@ -189,8 +186,7 @@ namespace Tennis
         {
             return _player1Score >= FortyPoints && _player2Score >= FortyPoints;
         }
-
-
+        
         private bool IsDeuce()
         {
             return _player1Score == FortyPoints && _player2Score == FortyPoints;
