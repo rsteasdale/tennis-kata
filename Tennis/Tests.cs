@@ -25,14 +25,16 @@ namespace Tennis
             Assert.Equal(expectedScore, game.Score());
         }
 
-        [Fact]
-        public void GivenPlayer1WinsFirstTwoPointsThenUpdateScore()
+        [Theory]
+        [InlineData("Player 1", "30-Love")]
+        [InlineData("Player 2", "Love-30")]
+        public void GivenPlayerWinsFirstTwoPointsThenUpdateScore(string winningPlayer, string expectedScore)
         {
             var game = new Game();
-            game.WinPoint("Player 1");
-            game.WinPoint("Player 1");
+            game.WinPoint(winningPlayer);
+            game.WinPoint(winningPlayer);
 
-            Assert.Equal("30-Love", game.Score());
+            Assert.Equal(expectedScore, game.Score());
         }
     }
 
