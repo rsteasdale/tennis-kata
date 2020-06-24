@@ -81,7 +81,7 @@ namespace Tennis
         [Theory]
         [InlineData("Player 1", "Advantage Player 1")]
         [InlineData("Player 2", "Advantage Player 2")]
-        public void GivenPlayer1WinsDeuceThenAdvantage(string winningPlayer, string expectedScore)
+        public void GivenPlayerWinsDeuceThenAdvantage(string winningPlayer, string expectedScore)
         {
             var game = new Game();
             game.WinPoint("Player 1");
@@ -95,20 +95,24 @@ namespace Tennis
 
             Assert.Equal(expectedScore, game.Score());
         }
+
+        
     }
 
     public class Game
     {
         private readonly string _player1;
+        private readonly string _player2;
         private string _score = "Love-Love";
         private int _player2Score;
         private int _player1Score;
 
         private const int FortyPoints = 3;
 
-        public Game(string player1 = "Player 1")
+        public Game(string player1 = "Player 1", string player2 = "Player 2")
         {
             _player1 = player1;
+            _player2 = player2;
         }
 
         public string Score()
@@ -125,17 +129,30 @@ namespace Tennis
 
             if (IsDeuce())
                 _score = "Deuce";
-            else if (_player1Score > FortyPoints && _player1Score == _player2Score + 1)
-                _score = $"Advantage {player}";
-            else if (_player2Score > FortyPoints && _player2Score == _player1Score + 1)
-                _score = $"Advantage {player}";
+            else if (PlayersHaveAtLeastForty() && PlayerWinningByOne())
+                _score = $"Advantage {GetWinningPlayer()}";
             else if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
                 _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
         }
 
-        
+        private string GetWinningPlayer()
+        {
+            return _player1Score > _player2Score ? _player1 : _player2;
+        }
+
+        private bool PlayerWinningByOne()
+        {
+            return _player1Score == _player2Score + 1 || _player2Score == _player1Score + 1;
+        }
+
+        private bool PlayersHaveAtLeastForty()
+        {
+            return _player1Score >= FortyPoints && _player2Score >= FortyPoints;
+        }
+
+
         private bool IsDeuce()
         {
             return _player1Score == FortyPoints && _player2Score == FortyPoints;
