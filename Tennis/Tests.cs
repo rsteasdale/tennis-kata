@@ -14,13 +14,15 @@ namespace Tennis
             Assert.Equal("Love-Love", game.Score());
         }
 
-        [Fact]
-        public void GivenPlayer1WinsFirstPointThenUpdateScore()
+        [Theory]
+        [InlineData("Player 1","15-Love")]
+        [InlineData("Player 2","Love-15")]
+        public void GivenPlayer1WinsFirstPointThenUpdateScore(string winningPlayer, string expectedScore)
         {
             var game = new Game();
-            game.WinPoint("Player 1");
+            game.WinPoint(winningPlayer);
 
-            Assert.Equal("15-Love", game.Score());
+            Assert.Equal(expectedScore, game.Score());
         }
     }
 
@@ -41,8 +43,10 @@ namespace Tennis
 
         public void WinPoint(string player)
         {
-            if(player == _player1)
+            if (player == _player1)
                 _score = "15-Love";
+            else
+                _score = "Love-15";
         }
     }
 }
