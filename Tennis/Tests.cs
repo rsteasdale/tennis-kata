@@ -77,6 +77,22 @@ namespace Tennis
 
             Assert.Equal("Deuce", game.Score());
         }
+
+        [Fact]
+        public void GivenPlayer1WinsDeuceThenAdvantage()
+        {
+            var game = new Game();
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+
+            game.WinPoint("Player 1");
+
+            Assert.Equal("Advantage Player 1", game.Score());
+        }
     }
 
     public class Game
@@ -107,6 +123,8 @@ namespace Tennis
 
             if (IsDeuce())
                 _score = "Deuce";
+            else if (_player1Score > FortyPoints && _player1Score == _player2Score + 1)
+                _score = $"Advantage {player}";
             else if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
