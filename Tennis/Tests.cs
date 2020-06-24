@@ -36,6 +36,19 @@ namespace Tennis
 
             Assert.Equal(expectedScore, game.Score());
         }
+
+        [Theory]
+        [InlineData("Player 1", "40-Love")]
+        [InlineData("Player 2", "Love-40")]
+        public void GivenPlayerWinsFirstThreePointsThenUpdateScore(string winningPlayer, string expectedScore)
+        {
+            var game = new Game();
+            game.WinPoint(winningPlayer);
+            game.WinPoint(winningPlayer);
+            game.WinPoint(winningPlayer);
+
+            Assert.Equal(expectedScore, game.Score());
+        }
     }
 
     public class Game
@@ -61,20 +74,23 @@ namespace Tennis
                 _player1Score++;
             else
                 _player2Score++;
-
-            var player1Points = ConvertToPoints(_player1Score);
-            var player2Points = ConvertToPoints(_player2Score);
-
-            _score = $"{player1Points}-{player2Points}";
+            
+            _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
         }
 
         private static string ConvertToPoints(int shotsWon)
         {
-            if (shotsWon == 0)
-                return "Love";
-            if (shotsWon == 1)
-                return "15";
-            return "30";
+            switch (shotsWon)
+            {
+                case 1:
+                    return "15";
+                case 2:
+                    return "30";
+                case 3:
+                    return "40";
+                default:
+                    return "Love";
+            }
         }
     }
 }
