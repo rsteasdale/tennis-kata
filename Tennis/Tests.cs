@@ -63,6 +63,20 @@ namespace Tennis
 
             Assert.Equal(expectedScore, game.Score());
         }
+
+        [Fact]
+        public void GivenBothPlayersHave40ThenDeuce()
+        {
+            var game = new Game();
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+
+            Assert.Equal("Deuce", game.Score());
+        }
     }
 
     public class Game
@@ -89,10 +103,17 @@ namespace Tennis
             else
                 _player2Score++;
 
-            if (PlayerHasWon())
+            if (IsDeuce())
+                _score = "Deuce";
+            else if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
                 _score = $"{ConvertToPoints(_player1Score)}-{ConvertToPoints(_player2Score)}";
+        }
+
+        private bool IsDeuce()
+        {
+            return _player1Score == 3 && _player2Score == 3;
         }
 
         private bool PlayerHasWon()
