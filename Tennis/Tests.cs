@@ -114,6 +114,25 @@ namespace Tennis
 
             Assert.Equal("Deuce", game.Score());
         }
+
+        [Theory]
+        [InlineData("Player 1", "Player 1 Wins!")]
+        [InlineData("Player 2", "Player 2 Wins!")]
+        public void GivenPlayer1WinsAdvantageThenTheyWinTheGame(string winningPlayer, string expectedScore)
+        {
+            var game = new Game();
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+
+            game.WinPoint(winningPlayer);
+            game.WinPoint(winningPlayer);
+
+            Assert.Equal(expectedScore, game.Score());
+        }
     }
 
     public class Game
