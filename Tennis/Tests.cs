@@ -96,7 +96,22 @@ namespace Tennis
             Assert.Equal(expectedScore, game.Score());
         }
 
-        
+        [Fact]
+        public void GivenPlayer1LosesAdvantageThenBackToDeuce()
+        {
+            var game = new Game();
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+            game.WinPoint("Player 2");
+
+            game.WinPoint("Player 1");
+            game.WinPoint("Player 2");
+
+            Assert.Equal("Deuce", game.Score());
+        }
     }
 
     public class Game
@@ -131,6 +146,8 @@ namespace Tennis
                 _score = "Deuce";
             else if (PlayersHaveAtLeastForty() && PlayerWinningByOne())
                 _score = $"Advantage {GetWinningPlayer()}";
+            else if (PlayersHaveAtLeastForty() && _player1Score == _player2Score)
+                _score = "Deuce";
             else if (PlayerHasWon())
                 _score = $"{player} Wins!";
             else
