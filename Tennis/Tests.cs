@@ -96,8 +96,10 @@ namespace Tennis
             Assert.Equal(expectedScore, game.Score());
         }
 
-        [Fact]
-        public void GivenPlayer2LosesAdvantageThenBackToDeuce()
+        [Theory]
+        [InlineData("Player 1", "Player 2")]
+        [InlineData("Player 2", "Player 1")]
+        public void GivenPlayerLosesAdvantageThenBackToDeuce(string winningPlayer, string losingPlayer)
         {
             var game = new Game();
             game.WinPoint("Player 1");
@@ -107,8 +109,8 @@ namespace Tennis
             game.WinPoint("Player 2");
             game.WinPoint("Player 2");
 
-            game.WinPoint("Player 2");
-            game.WinPoint("Player 1");
+            game.WinPoint(winningPlayer);
+            game.WinPoint(losingPlayer);
 
             Assert.Equal("Deuce", game.Score());
         }
